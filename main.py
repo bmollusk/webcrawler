@@ -1,3 +1,4 @@
 import bfs
 originURL = input("Enter URL of origin: ")
-print(bfs.bfs(originURL))
+size = int(input("Enter size of graph: "))
+print(bfs.bfs(originURL, size))

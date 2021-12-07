@@ -1,5 +1,5 @@
 import getAllHyperlinks
-def bfs(source):
+def bfs(source, size):
     output = []
 
     q = []
@@ -8,16 +8,17 @@ def bfs(source):
     q.append(source)
     visited.add(source)
 
-    while len(q)>0 and len(output)<1000:
+    while len(q)>0 and len(output)<=size:
         u = q[0]
 
         output.append(u)
-        print(u, len(output), "/1000")
+        print(u, len(output), "/", size, len(q))
 
         q.pop(0)
         neighbors = getAllHyperlinks.get_all_links(u)
-        for v in neighbors:
-            if v not in visited:
-                q.append(v)
-                visited.add(v)
+        if len(q) + len(output) <= size:
+            for v in neighbors:
+                if v not in visited:
+                    q.append(v)
+                    visited.add(v)
     return output
