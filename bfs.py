@@ -1,24 +1,22 @@
-import getAllHyperlinks
+import getAllHyperlinks as gahl
+import networkx as nx
 def bfs(source, size):
-    output = []
-
-    q = []
+    G = nx.DiGraph()
+    q = [source]
     visited = set()
-
-    q.append(source)
     visited.add(source)
 
-    while len(q)>0 and len(output)<=size:
+    while len(q)>0 and G.number_of_nodes()<size:
         u = q[0]
-
-        output.append(u)
-        print(u, len(output), "/", size, len(q))
+        G.add_node(u)
+        print(u, G.number_of_nodes(), "/", size, len(q))
 
         q.pop(0)
-        neighbors = getAllHyperlinks.get_all_links(u)
-        if len(q) + len(output) <= size:
-            for v in neighbors:
+        neighbors = gahl.get_all_links(u)
+        for v in neighbors:
+            if len(q) + G.number_of_nodes() <= size:
                 if v not in visited:
                     q.append(v)
                     visited.add(v)
-    return output
+                G.add_edge(u, v)
+    return G
