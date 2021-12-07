@@ -8,10 +8,11 @@ def bfs(source):
     q.append(source)
     visited.add(source)
 
-    while len(q)>0:
+    while len(q)>0 and len(output)<1000:
         u = q[0]
 
         output.append(u)
+        print(u, len(output), "/1000")
 
         q.pop()
         neighbors = getAllHyperlinks.get_all_links(u)
