@@ -1,3 +1,4 @@
+import getAllHyperlinks
 def bfs(source):
     output = []
 
@@ -13,7 +14,7 @@ def bfs(source):
         output.append(u)
 
         q.pop()
-        neighbors = webcrawler(u)
+        neighbors = getAllHyperlinks.get_all_links(u)
         for v in neighbors:
             if v in visited:
                 q.append(v)

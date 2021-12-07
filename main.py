@@ -1,3 +1,3 @@
-import getAllHyperlinks
+import bfs
 originURL = input("Enter URL of origin: ")
-print(getAllHyperlinks.get_all_links(originURL))
+print(bfs.bfs(originURL))
