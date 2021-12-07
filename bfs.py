@@ -16,7 +16,7 @@ def bfs(source):
         q.pop()
         neighbors = getAllHyperlinks.get_all_links(u)
         for v in neighbors:
-            if v in visited:
+            if v not in visited:
                 q.append(v)
                 visited.add(v)
     return output
