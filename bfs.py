@@ -13,7 +13,7 @@ def bfs(source):
 
         output.append(u)
 
-        q.pop()
+        q.pop(0)
         neighbors = getAllHyperlinks.get_all_links(u)
         for v in neighbors:
             if v not in visited:
