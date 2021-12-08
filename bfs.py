@@ -87,29 +87,3 @@ async def explorelite(v):
     for w in neighbors:
         if w in G:
             G.add_edge(v, w)
-
-async def bfsrecurse(u, G, visited, size):
-    G.add_node(u)
-    print(u, G.number_of_nodes(), "/", size)
-
-    neighbors = gahl.get_all_links(u)
-    for v in neighbors:
-        if G.number_of_nodes() == size:
-            break
-        if v not in visited:
-            visited.add(v)
-            await ao.create_task(bfsrecurse(v, G, visited, size))
-        G.add_edge(u, v)
-
-
-async def bfsmp(source, _size):
-    G = nx.DiGraph()
-    visited = set()
-    size = 0
-
-    visited.add(source)
-    size = _size
-
-    await ao.create_task(bfsrecurse(source, G, visited, size))
-
-    return G
