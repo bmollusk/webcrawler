@@ -4,7 +4,6 @@ def bfs(source, size):
     G = nx.DiGraph()
     q = [source]
     visited = set()
-    #visited.add(source)
 
     while len(q)>0 and G.number_of_nodes()<size:
         u = q[0]
