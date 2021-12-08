@@ -15,6 +15,6 @@ def get_all_links(url):
     for link in soup.find_all("a"):
         data = link.get('href')
         if isinstance(data, str):
-            if "https" in data:
+            if "https://" in data:
                 links.append(data)
     return links

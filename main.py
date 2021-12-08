@@ -6,7 +6,7 @@ if __name__ == '__main__':
     originURL = input("Enter URL of origin: ")
     #https://en.wikipedia.org/wiki/MissingNo.
     size = int(input("Enter size of graph: "))
-    G = bfs.bfs(originURL, size)
+    G = bfs.bfb(originURL, size)
     print(G)
 
     # subax1=plt.subplot(121)
