@@ -5,7 +5,7 @@ import socket
 
 
 async def get_all_links(url):
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
         async with session.get(url) as grab:
             print(url)
             html = await grab.text()
