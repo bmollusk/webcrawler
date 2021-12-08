@@ -1,7 +1,7 @@
 import bfs
 import networkx as nx
 import matplotlib.pyplot as plt
-import asyncio as ao
+import trio
 from matplotlib import pylab
 import time
 if __name__ == '__main__':
@@ -9,7 +9,7 @@ if __name__ == '__main__':
     #https://en.wikipedia.org/wiki/MissingNo.
     size = int(input("Enter size of graph: "))
     start_time = time.time()
-    G = ao.run(bfs.bfsasync(originURL, size))
+    G = trio.run(bfs.bfsasync, originURL, size)
     print("--- %s seconds ---" % (time.time() - start_time))
     print(G)
 

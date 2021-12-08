@@ -1,13 +1,13 @@
 import getAllHyperlinks as gahl
 import networkx as nx
-import asyncio as ao
+import trio
 
 
 def bfb(source, size):
     G = nx.DiGraph()
     q = [source]
     visited = set()
-    #visited.add(source)
+    # visited.add(source)
 
     while len(q) > 0 and G.number_of_nodes() < size:
         u = q[0]
@@ -38,7 +38,6 @@ q = []
 visited = set()
 
 
-
 async def bfsasync(source, size):
     global G
     global q
@@ -47,19 +46,16 @@ async def bfsasync(source, size):
     # visited.add(source)
 
     while len(q) > 0 and G.number_of_nodes() < size:
-        tasks = []
         p = q.copy()
         q = []
-        for u in p:
-            tasks.append(ao.create_task(explore(u, size)))
-        print(ao.all_tasks())
-        await ao.gather(*tasks)
-    tasks = []
-    for v in q:
-        tasks.append(ao.create_task(explorelite(v)))
-    print(ao.all_tasks())
-    await ao.gather(*tasks)
-
+        async with trio.open_nursery() as nursery:
+            for u in p:
+                nursery.start_soon(explore, u, size)
+            print(nursery.child_tasks)
+    async with trio.open_nursery() as nursery:
+        for v in q:
+            nursery.start_soon(explorelite, v)
+        print(nursery.child_tasks)
     return G
 
 
@@ -81,9 +77,10 @@ async def explore(u, size):
             q.append(v)
             G.add_edge(u, v)
 
+
 async def explorelite(v):
     print(v, G.number_of_nodes(), G.number_of_edges(), )
-    neighbors = gahl.get_all_links(v)
+    neighbors = await gahl.get_all_links(v)
     for w in neighbors:
         if w in G:
             G.add_edge(v, w)
