@@ -45,6 +45,8 @@ async def bfsasync(source, size):
     q.append(source)
     # visited.add(source)
 
+    G.add_node(source)
+
     while len(q) > 0 and G.number_of_nodes() < size:
         p = q.copy()
         q = []

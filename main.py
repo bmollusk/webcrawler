@@ -6,13 +6,13 @@ from matplotlib import pylab
 import time
 
 async def main():
-    originURL = input("Enter URL of origin: ")
+    originURL = input("Enter URL of origin: ").strip()
     # https://en.wikipedia.org/wiki/MissingNo.
     size = int(input("Enter size of graph: "))
     start_time = time.time()
     G = await bfs.bfsasync(originURL, size)
     print("--- %s seconds ---" % (time.time() - start_time))
-    print(G.adj)
+    print(G.number_of_nodes(), G.number_of_edges())
 
 
     # subax1=plt.subplot(121)
