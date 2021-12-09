@@ -4,15 +4,21 @@ import matplotlib.pyplot as plt
 import trio
 from matplotlib import pylab
 import time
-if __name__ == '__main__':
+
+async def main():
     originURL = input("Enter URL of origin: ")
-    #https://en.wikipedia.org/wiki/MissingNo.
+    # https://en.wikipedia.org/wiki/MissingNo.
     size = int(input("Enter size of graph: "))
     start_time = time.time()
-    G = trio.run(bfs.bfsasync, originURL, size)
+    G = await bfs.bfsasync(originURL, size)
     print("--- %s seconds ---" % (time.time() - start_time))
-    print(G)
+    print(G.adj)
+
 
     # subax1=plt.subplot(121)
     # nx.draw(G, with_labels=True)
     # plt.show()
+
+if __name__ == '__main__':
+    trio.run(main)
+
