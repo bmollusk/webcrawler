@@ -17,7 +17,7 @@ async def get_all_links(url):
     user_agent = random.choice(user_agent_list)
     headers = {"User-Agent": user_agent}
     try:
-        async with httpx.AsyncClient(limits=httpx.Limits(max_connections=7, max_keepalive_connections=6), timeout=None, headers=headers) as client:
+        async with httpx.AsyncClient(limits=httpx.Limits(max_connections=7, max_keepalive_connections=6), timeout=60.0, headers=headers) as client:
             grab = await client.get(url)
             await trio.sleep(2)
             print(url, "URL")

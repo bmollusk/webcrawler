@@ -1,6 +1,5 @@
 import bfs
 import networkx as nx
-from pyvis.network import Network
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import trio
