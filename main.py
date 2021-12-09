@@ -1,5 +1,7 @@
 import bfs
 import networkx as nx
+from pyvis.network import Network
+import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import trio
 from matplotlib import pylab
@@ -14,11 +16,13 @@ async def main():
     print("--- %s seconds ---" % (time.time() - start_time))
     print(G.number_of_nodes(), G.number_of_edges())
 
-
-    # subax1=plt.subplot(121)
-    # nx.draw(G, with_labels=True)
+    # nx.draw_random(G)
     # plt.show()
+
+    # net = Network(notebook=True)
+    # net.from_nx(G)
+    # net.show("example.html")
+
 
 if __name__ == '__main__':
     trio.run(main)
-

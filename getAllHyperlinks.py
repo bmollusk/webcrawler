@@ -47,3 +47,9 @@ async def get_all_links(url):
     except UnicodeDecodeError as err:
         print("HUH", err)
         return []
+    except OSError as err:
+        print("YUH", err)
+        return []
+    except UnicodeError as err:
+        print("YUH", err)
+        return []
