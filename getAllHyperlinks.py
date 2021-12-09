@@ -6,6 +6,17 @@ import random
 
 
 async def get_all_links(url):
+    links = [] #I moved this up here
+
+    #new stuff ----- begin
+    with open("data.txt", "r", encoding="utf-8") as datafile:
+        for line in datafile:
+            if line.startswith(url):
+                links = line.strip().split("{")
+                links.pop(0)
+                return links
+    # new stuff ----- end
+
     user_agent_list = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Safari/605.1.15',
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0',
@@ -17,20 +28,29 @@ async def get_all_links(url):
     user_agent = random.choice(user_agent_list)
     headers = {"User-Agent": user_agent}
     try:
-        async with httpx.AsyncClient(limits=httpx.Limits(max_connections=7, max_keepalive_connections=6), timeout=60.0, headers=headers) as client:
+        async with httpx.AsyncClient(limits=httpx.Limits(max_connections=7, max_keepalive_connections=6), timeout=120.0, headers=headers) as client:
             grab = await client.get(url)
             await trio.sleep(2)
-            print(url, "URL")
+            print(url, "new")
             # if grab.status_code!=200:
             #     return []
             html = grab.text.encode('utf-8')
             soup = BeautifulSoup(html, 'html.parser')
-            links = []
             for link in soup.find_all("a"):
                 data = link.get('href')
                 if isinstance(data, str):
                     if data.startswith("https://"):
                         links.append(data)
+
+            #new stuff ----- begin
+            links.insert(0, url)
+            with open("data.txt", "a", encoding="utf-8") as datafile:
+                for h in links:
+                    datafile.write(h + "{")
+                datafile.write("\n")
+            links.pop(0)
+            #new stuff ----- end
+
             return links
     except httpx.ConnectError as err:
         print("ERR", err)
@@ -51,5 +71,8 @@ async def get_all_links(url):
         print("YUH", err)
         return []
     except UnicodeError as err:
-        print("YUH", err)
+        print("UUH", err)
+        return []
+    except httpx.TimeoutException as err:
+        print("DUH", err)
         return []
