@@ -1,38 +1,49 @@
 import getAllHyperlinks as gahl
 import networkx as nx
+import collections
 import matplotlib.pyplot as plt
 import trio
 
 
-def bfb(source, size):
-    G = nx.DiGraph()
-    q = [source]
-    visited = set()
-    # visited.add(source)
+def dijkstra(G, originURL):
+    computed = set()
+    d={}
+    p={}
+    for n in G:
+        d[n]=99999999
+        p[n]="NO PREVIOUS SITE"
+    d[originURL] = 0
+    while len(computed)<G.number_of_nodes():
+        smallest = -1
+        for n in d:
+            if n not in computed:
+                if smallest == -1:
+                    smallest = n
+                if d[smallest] > d[n]:
+                    smallest = n
+        computed.add(smallest)
+        for v in G[smallest]:
+            if d[smallest] + 1 < d[v]:
+                d[v] = d[smallest]+1
+                p[v] = smallest
+    return [d, p]
 
-    while len(q) > 0 and G.number_of_nodes() < size:
-        u = q[0]
-        print(u, G.number_of_nodes(), "/", size, len(q))
 
-        q.pop(0)
-        if u not in visited:
-            neighbors = gahl.get_all_links(u)
-            visited.add(u)
-            for v in neighbors:
-                if G.number_of_nodes() == size:
-                    break
-                q.append(v)
-                G.add_edge(u, v)
 
-    for v in q:
-        print(v, G.number_of_nodes(), G.number_of_edges(), )
-        neighbors = gahl.get_all_links(v)
-        for w in neighbors:
-            if w in G:
-                G.add_edge(v, w)
 
-    return G
-
+def dfs(G, originURL, URLtoFind):
+    stack = [originURL]
+    identified = set()
+    identified.add(originURL)
+    while len(stack)>0:
+        u = stack.pop()
+        for v in G[u]:
+            if v not in identified:
+                if v==URLtoFind:
+                    return True
+                identified.add(v)
+                stack.append(v)
+    return False
 
 G = nx.DiGraph()
 q = []
